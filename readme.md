@@ -1,7 +1,7 @@
 # Личный проект «Типотека» [![Build status][travis-image]][travis-url]
 
 * Студент: [Евгения](https://up.htmlacademy.ru/nodejs/3/user/430263).
-* Наставник: [Олег Левшин](https://htmlacademy.ru/profile/id58654).
+* Наставник: [Владимир Коршунов](https://htmlacademy.ru/profile/id83596).
 
 ---
 
