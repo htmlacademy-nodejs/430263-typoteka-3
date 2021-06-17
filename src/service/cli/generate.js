@@ -1,14 +1,17 @@
 'use strict';
 
 const fs = require(`fs`);
-const {ExitCode} = require(`../../enums`);
 const utils = require(`../../utils`);
+const {FileGenerationFailedError, MockPostsMaxCountExceededError} = require(`../../errors`);
 
 // region Constants
-const DEFAULT_COUNT = 1;
-const MAX_COUNT = 1000;
-
 const FILE_NAME = `mocks.json`;
+
+const PostsCount = {
+  DEFAULT: 1,
+  MAX: 1000,
+};
+
 // endregion Constants
 
 // region Titles
@@ -92,11 +95,11 @@ const CategoriesCountRestriction = {
 };
 // endregion Categories
 
-function generatePosts(count = DEFAULT_COUNT) {
-  if (count > MAX_COUNT) {
-    console.error(`Не больше ${MAX_COUNT} объявлений`);
+function generatePosts(count = PostsCount.DEFAULT) {
+  if (count > PostsCount.MAX) {
+    utils.ErrorHandler.handleError(new MockPostsMaxCountExceededError(PostsCount.MAX));
 
-    process.exit(ExitCode.Error);
+    return undefined;
   }
 
   return Array(count).fill(null).map(() => {
@@ -136,18 +139,18 @@ module.exports = {
   run(args = []) {
     const [count] = args;
 
-    const normalizedCount = Number.parseInt(count, 10) || DEFAULT_COUNT;
+    const normalizedCount = Number.parseInt(count, 10) || PostsCount.DEFAULT;
 
     const content = JSON.stringify(generatePosts(normalizedCount), null, `\t`);
 
     fs.writeFile(FILE_NAME, content, (error) => {
       if (error) {
-        console.error(`Error while writing data to file: ${error}.`);
+        utils.ErrorHandler.handleError(new FileGenerationFailedError(error.message));
 
         return;
       }
 
-      console.info(`Operation successful. File created.`);
+      console.info(`Файл ${FILE_NAME} сформирован.`);
     });
   }
 };
