@@ -16,7 +16,16 @@ class FileGenerationFailedError extends Error {
   }
 }
 
+class FileContentReadingFailedError extends Error {
+  constructor(fileName, message) {
+    super(`Ошибка при чтении файла '${fileName}': ${message}.`);
+
+    this.fileName = fileName;
+  }
+}
+
 module.exports = {
+  FileContentReadingFailedError,
   FileGenerationFailedError,
   MockPostsMaxCountExceededError
 };
