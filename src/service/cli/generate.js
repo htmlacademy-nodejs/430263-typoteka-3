@@ -1,8 +1,8 @@
 'use strict';
 
-const fs = require(`fs`);
-const utils = require(`../../utils`);
-const {FileGenerationFailedError, MockPostsMaxCountExceededError} = require(`../../errors`);
+const {CliCommandName} = require(`../../enums`);
+const {arrayUtils, fileUtils, numberUtils} = require(`../../utils`);
+const {MockPostsMaxCountExceededError} = require(`../../errors`);
 
 // region Constants
 const FILE_NAME = `mocks.json`;
@@ -97,9 +97,7 @@ const CategoriesCountRestriction = {
 
 function generatePosts(count = PostsCount.DEFAULT) {
   if (count > PostsCount.MAX) {
-    utils.ErrorHandler.handleError(new MockPostsMaxCountExceededError(PostsCount.MAX));
-
-    return undefined;
+    throw new MockPostsMaxCountExceededError(PostsCount.MAX);
   }
 
   return Array(count).fill(null).map(() => {
@@ -119,38 +117,31 @@ function generatePosts(count = PostsCount.DEFAULT) {
 }
 
 function getRandomItemFromCollection(collection) {
-  return collection[utils.getRandomInt(0, collection.length - 1)];
+  return collection[numberUtils.getRandomInt(0, collection.length - 1)];
 }
 
 function getRandomItemsFromCollection(collection, restriction) {
   const count = getRandomRestrictedNumber(restriction);
 
-  return utils.shuffle(collection).slice(0, count);
+  return arrayUtils.shuffle(collection).slice(0, count);
 }
 
 function getRandomRestrictedNumber(restriction) {
   const {MIN = 0, MAX = MIN} = restriction;
 
-  return utils.getRandomInt(MIN, MAX);
+  return numberUtils.getRandomInt(MIN, MAX);
 }
 
 module.exports = {
-  name: `generate`,
-  run(args = []) {
-    const [count] = args;
+  name: CliCommandName.Generate,
+  async run(args = []) {
+    const [countArg] = args;
 
-    const normalizedCount = Number.parseInt(count, 10) || PostsCount.DEFAULT;
+    const count = Number.parseInt(countArg, 10) || PostsCount.DEFAULT;
 
-    const content = JSON.stringify(generatePosts(normalizedCount), null, `\t`);
+    const posts = generatePosts(count);
+    const content = JSON.stringify(posts, null, `\t`);
 
-    fs.writeFile(FILE_NAME, content, (error) => {
-      if (error) {
-        utils.ErrorHandler.handleError(new FileGenerationFailedError(error.message));
-
-        return;
-      }
-
-      console.info(`Файл ${FILE_NAME} сформирован.`);
-    });
+    await fileUtils.create(FILE_NAME, content);
   }
 };
