@@ -3,6 +3,7 @@
 const CliCommandName = {
   Generate: `generate`,
   Help: `help`,
+  Server: `server`,
   Version: `version`,
 };
 
@@ -11,7 +12,13 @@ const ExitCode = {
   Success: 0,
 };
 
+const HttpResponseCode = {
+  NotFound: 404,
+  Success: 200,
+};
+
 module.exports = {
   CliCommandName,
-  ExitCode
+  ExitCode,
+  HttpResponseCode,
 };

@@ -5,6 +5,7 @@ const cliUtils = require(`./cli`);
 const errorUtils = require(`./error`);
 const fileUtils = require(`./file`);
 const numberUtils = require(`./number`);
+const templateUtils = require(`./template`);
 
 module.exports = {
   arrayUtils,
@@ -12,4 +13,5 @@ module.exports = {
   fileUtils,
   errorUtils,
   numberUtils,
+  templateUtils,
 };
