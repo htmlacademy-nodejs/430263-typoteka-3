@@ -1,10 +1,8 @@
 'use strict';
 
-const helpCliCommand = require(`./service/cli/help`);
-
-const defaultCliCommand = helpCliCommand;
+const {CliCommandName} = require(`./enums`);
 
 module.exports = {
-  DEFAULT_COMMAND: defaultCliCommand.name,
+  DEFAULT_COMMAND_NAME: CliCommandName.Help,
   USER_ARGV_INDEX: 2,
 };

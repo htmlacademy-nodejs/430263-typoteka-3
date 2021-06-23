@@ -9,8 +9,10 @@ class MockPostsMaxCountExceededError extends Error {
 }
 
 class FileGenerationFailedError extends Error {
-  constructor(message) {
-    super(`Ошибка при записи в файл: ${message}.`);
+  constructor(fileName, message) {
+    super(`Ошибка при записи в файл '${fileName}': ${message}.`);
+
+    this.fileName = fileName;
   }
 }
 

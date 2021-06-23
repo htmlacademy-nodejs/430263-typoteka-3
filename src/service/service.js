@@ -1,24 +1,20 @@
 'use strict';
 
-const {DEFAULT_COMMAND} = require(`../constants`);
-const utils = require(`../utils`);
+const {DEFAULT_COMMAND_NAME} = require(`../constants`);
+const {cliUtils, errorUtils} = require(`../utils`);
 const cli = require(`./cli`);
 
-try {
-  const userArgs = utils.getUserArgs();
+const userArgs = cliUtils.getUserArgs();
 
-  const [command] = userArgs;
-  const parsedCommand = utils.parseUserCommand(command);
+const [commandArg] = userArgs;
+const command = cliUtils.parseUserCommand(commandArg);
 
-  const commandArgs = userArgs.slice(1);
+const commandArgs = userArgs.slice(1);
+const commandName = command && cli[command] ? command : DEFAULT_COMMAND_NAME;
 
-  if (!command || !cli[parsedCommand]) {
-    cli[DEFAULT_COMMAND].run(commandArgs);
-  } else {
-    cli[parsedCommand].run(commandArgs);
-  }
-} catch (error) {
-  utils.ErrorHandler.handleError(error);
+runCommand(commandName, commandArgs)
+  .catch((error) => errorUtils.ErrorHandler.handleError(error));
+
+async function runCommand(name, args) {
+  return await cli[name].run(args);
 }
-
-
