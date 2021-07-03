@@ -7,5 +7,5 @@ module.exports.getUserArgs = () => {
 };
 
 module.exports.parseUserCommand = (command) => {
-  return command?.replace(/^--/, ``);
+  return command && command.replace(/^--/, ``);
 };

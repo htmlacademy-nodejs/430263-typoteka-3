@@ -3,7 +3,7 @@
 const path = require(`path`);
 const {MOCKS_FILE_NAME} = require(`../../constants`);
 const {CliCommandName} = require(`../../enums`);
-const {arrayUtils, fileUtils, numberUtils} = require(`../../utils`);
+const {arrayUtils, fileUtils, numberUtils, typeUtils} = require(`../../utils`);
 const {MockPostsMaxCountExceededError} = require(`../../errors`);
 
 // region Constants
@@ -84,8 +84,8 @@ function getRandomItemFromCollection(collection) {
 
 function getRandomItemsFromCollection(collection, restriction) {
   const _restriction = {
-    MIN: restriction.MIN ?? 0,
-    MAX: restriction.MAX ?? collection.length - 1
+    MIN: typeUtils.isNullOrUndefined(restriction.MIN) ? 0 : restriction.MIN,
+    MAX: typeUtils.isNullOrUndefined(restriction.MAX) ? (collection.length - 1) : restriction.MAX
   };
   const count = getRandomRestrictedNumber(_restriction);
 
