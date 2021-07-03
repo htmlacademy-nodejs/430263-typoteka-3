@@ -51,7 +51,7 @@ function sendResponse(res, code, content) {
 
 module.exports = {
   name: CliCommandName.Server,
-  async run(args) {
+  run(args) {
     const [portArg] = args;
 
     const port = Number.parseInt(portArg, 10) || DEFAULT_PORT;
