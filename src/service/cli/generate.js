@@ -49,7 +49,7 @@ async function getData() {
   const titlesPromise = fileUtils.read(TITLES_FILE_PATH);
   const sentencesPromise = fileUtils.read(SENTENCES_FILE_PATH);
 
-  return await Promise.all([categoriesPromise, titlesPromise, sentencesPromise])
+  return Promise.all([categoriesPromise, titlesPromise, sentencesPromise])
     .then(([categories, titles, sentences]) => ({
       categories,
       titles,
