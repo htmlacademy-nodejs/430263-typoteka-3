@@ -17,7 +17,7 @@ const text = `
 
 module.exports = {
   name: CliCommandName.Help,
-  async run() {
+  run() {
     console.info(chalk.gray(text));
   }
 };

@@ -1,12 +1,12 @@
 'use strict';
 
 const path = require(`path`);
+const {MOCKS_FILE_NAME} = require(`../../constants`);
 const {CliCommandName} = require(`../../enums`);
 const {arrayUtils, fileUtils, numberUtils, typeUtils} = require(`../../utils`);
 const {MockPostsMaxCountExceededError} = require(`../../errors`);
 
 // region Constants
-const FILE_NAME = `mocks.json`;
 const DATA_DIR_PATH = path.normalize(`${__dirname}/../../data`);
 const CATEGORIES_FILE_PATH = path.join(DATA_DIR_PATH, `categories.txt`);
 const TITLES_FILE_PATH = path.join(DATA_DIR_PATH, `titles.txt`);
@@ -49,7 +49,7 @@ async function getData() {
   const titlesPromise = fileUtils.read(TITLES_FILE_PATH);
   const sentencesPromise = fileUtils.read(SENTENCES_FILE_PATH);
 
-  return await Promise.all([categoriesPromise, titlesPromise, sentencesPromise])
+  return Promise.all([categoriesPromise, titlesPromise, sentencesPromise])
     .then(([categories, titles, sentences]) => ({
       categories,
       titles,
@@ -111,6 +111,6 @@ module.exports = {
     const posts = generatePosts(categories, titles, sentences, count);
     const content = JSON.stringify(posts, null, `\t`);
 
-    await fileUtils.create(FILE_NAME, content);
+    await fileUtils.create(MOCKS_FILE_NAME, content);
   }
 };

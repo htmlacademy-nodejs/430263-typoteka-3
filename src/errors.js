@@ -24,8 +24,15 @@ class FileContentReadingFailedError extends Error {
   }
 }
 
+class ServerError extends Error {
+  constructor(message) {
+    super(`Ошибка сервера: ${message}.`);
+  }
+}
+
 module.exports = {
   FileContentReadingFailedError,
   FileGenerationFailedError,
-  MockPostsMaxCountExceededError
+  MockPostsMaxCountExceededError,
+  ServerError,
 };

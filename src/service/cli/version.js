@@ -8,7 +8,7 @@ const version = packageJsonFile.version;
 
 module.exports = {
   name: CliCommandName.Version,
-  async run() {
+  run() {
     console.info(chalk.blue(version));
   }
 };
